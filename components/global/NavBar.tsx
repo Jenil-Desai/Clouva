@@ -7,12 +7,21 @@ import { Avatar, AvatarFallback } from '../ui/avatar';
 
 export default async function Navbar() {
   const cookie = await cookies();
-  const user = JSON.parse(cookie.get('user')!.value) as {
+  let user: {
     email: string;
     firstName: string;
     lastName: string;
     publicKey: string;
-  };
+  } | null = null;
+
+  const userCookie = cookie.get('user');
+  if (userCookie && userCookie.value) {
+    try {
+      user = JSON.parse(userCookie.value);
+    } catch {
+      user = null;
+    }
+  }
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-background border-b border-border">
