@@ -51,11 +51,11 @@ export default async function registerAction(data: RegisterSchema) {
         email,
         password: hashedPassword,
         privateKey: encryptedPrivateKey,
-        publicKey: keypair.publicKey.toString(),
+        publicKey: keypair.publicKey.toBase58(),
       }
     });
 
-    const token = jwt.sign({ email, firstName, lastName }, process.env.JWT_SECRET);
+    const token = jwt.sign({ email, firstName, lastName, publicKey: keypair.publicKey.toString() }, process.env.JWT_SECRET);
 
     const cookie = await cookies();
 

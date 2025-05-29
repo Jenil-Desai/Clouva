@@ -37,7 +37,7 @@ export default async function loginAction(data: LoginSchema) {
       };
     }
 
-    const token = jwt.sign({ email: user.email, firstName: user.firstName, lastName: user.lastName }, process.env.JWT_SECRET);
+    const token = jwt.sign({ email: user.email, firstName: user.firstName, lastName: user.lastName, publicKey: user.publicKey }, process.env.JWT_SECRET);
 
     const cookie = await cookies();
     cookie.set("token", token, { httpOnly: true, secure: process.env.NODE_ENV === "production" });

@@ -1,15 +1,18 @@
 import { Button } from '@/components/ui/button';
-import { headers } from 'next/headers';
+import { cookies } from 'next/headers';
 import Link from 'next/link';
 import React from 'react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';
 import { Avatar, AvatarFallback } from '../ui/avatar';
 
 export default async function Navbar() {
-  const headersList = await headers();
-  const userEmail = headersList.get('x-user-email');
-  const userFirstName = headersList.get('x-user-fname');
-  const userLastName = headersList.get('x-user-lname');
+  const cookie = await cookies();
+  const user = JSON.parse(cookie.get('user')!.value) as {
+    email: string;
+    firstName: string;
+    lastName: string;
+    publicKey: string;
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-background border-b border-border">
@@ -21,11 +24,11 @@ export default async function Navbar() {
             </Link>
           </div>
           <div className="flex items-center space-x-4">
-            {userEmail ? (
+            {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger>
                   <Avatar>
-                    <AvatarFallback>{userFirstName![0] + userLastName![0]}</AvatarFallback>
+                    <AvatarFallback>{user.firstName[0] + user.lastName![0]}</AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>

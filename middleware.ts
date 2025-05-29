@@ -7,18 +7,17 @@ export function middleware(request: NextRequest) {
   if (!token) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
-  const jwtPayload = jwtDecode<{ email: string, firstName: string, lastName: string }>(token);
+  const jwtPayload = jwtDecode<{ email: string, firstName: string, lastName: string, publicKey: string }>(token);
 
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set('x-user-email', jwtPayload.email);
-  requestHeaders.set('x-user-fname', jwtPayload.firstName);
-  requestHeaders.set('x-user-lname', jwtPayload.lastName);
+  const reponse = NextResponse.next();
+  reponse.cookies.set("user", JSON.stringify({
+    email: jwtPayload.email,
+    firstName: jwtPayload.firstName,
+    lastName: jwtPayload.lastName,
+    publickKey: jwtPayload.publicKey
+  }))
 
-  return NextResponse.next({
-    request: {
-      headers: requestHeaders,
-    }
-  })
+  return reponse;
 }
 
 export const config = {
