@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
+import Navbar from "@/components/global/NavBar";
+import Footer from "@/components/global/Footer";
 
 export const metadata: Metadata = {
   title: "Clouva",
@@ -10,7 +13,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body>
-        {children}
+        <Navbar />
+        <main className="flex-grow pt-16">
+          <Toaster />
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );
