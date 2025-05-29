@@ -3,11 +3,11 @@ import type { NextRequest } from 'next/server'
 import { jwtDecode } from 'jwt-decode';
 
 export function middleware(request: NextRequest) {
-  const token = request.cookies.get('token')?.value;
+  const token = request.cookies.get('token');
   if (!token) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
-  const jwtPayload = jwtDecode<{ email: string, firstName: string, lastName: string, publicKey: string }>(token);
+  const jwtPayload = jwtDecode<{ email: string, firstName: string, lastName: string, publicKey: string }>(token.value);
 
   const reponse = NextResponse.next();
   reponse.cookies.set("user", JSON.stringify({
