@@ -3,7 +3,7 @@
 import prisma from "@/lib/prisma";
 import { txSchema, TxSchema } from "@/schema/transferSchema";
 import { decrypt } from "@/utils/encryption";
-import { Connection, Keypair, PublicKey, Transaction } from "@solana/web3.js";
+import { Connection, Keypair, Transaction } from "@solana/web3.js";
 import { cookies } from "next/headers";
 
 export default async function transferAction(data: TxSchema) {
@@ -30,7 +30,7 @@ export default async function transferAction(data: TxSchema) {
     }
   }
 
-  const { serializedTransaction, retry } = validatedData.data;
+  const { serializedTransaction } = validatedData.data;
   let userDetails;
 
   try {
